@@ -2,7 +2,7 @@ import { useState,useEffect } from 'react'
 import Header from './Header'
 import Sidebar from './Sidebar'
 import Home from './Home'
-import { getExpenses } from '../service/allapi'
+import { getUsers } from '../service/allapi'
 
 
 function Dashboard() {
@@ -13,7 +13,7 @@ function Dashboard() {
 
   }
   const email = localStorage.getItem("email")
-  console.log(email);
+  // console.log(email);
    //state to store all expense
    const[allExps,SetAllexps]=useState([])
 
@@ -24,21 +24,21 @@ function Dashboard() {
  
   })
        //define a function to call api
-       const getExpenseCall=async()=>{
-        const response=await getExpenses(userData)
-        SetAllexps(response.data.expenses)
-        console.log(SetAllexps);
+       const getUserCall=async()=>{
+        const response=await getUsers(userData)
+        SetAllexps(response.data)
+    
         const id=response.data._id
         localStorage.setItem('id',id)
         
       }
 
-  console.log(userData);
+  // console.log(userData);
  
   
    useEffect(()=>{
 
-    getExpenseCall()
+    getUserCall()
    
   },[])
   return (

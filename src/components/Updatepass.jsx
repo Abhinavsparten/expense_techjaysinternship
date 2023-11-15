@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css"
 import { BsPersonCircle} from 'react-icons/bs'
 import {
@@ -16,11 +16,12 @@ import {
   MDBCheckbox
 }
 from 'mdb-react-ui-kit';
-import { ResetPass } from '../service/allapi';
+import { UpdatePass } from '../service/allapi';
 
-function Passreset() {
+function Updatepass() {
 
-  const uid=localStorage.getItem("id")
+
+const{id} =useParams()
 
   
     //state to store api response erroe message
@@ -28,8 +29,8 @@ function Passreset() {
 
   //create an object to store datas from input
   const [userData, setUser] = useState({
-    email: "",
-    uid
+   pass:"",
+   id:id
 
   })
     //object for useNavigate
@@ -50,16 +51,16 @@ console.log(userData);
 
 const handleSubmit = async (e) => {
   e.preventDefault()
-  const { email,uid } = userData
+  const { pass,id } = userData
   
- if (email == "") {
-    toast.error('email requierd')
+ if (pass == "") {
+    toast.error('Password requierd')
   }
  
   else {
    
     //api call
-    const response = await ResetPass(userData)
+    const response = await UpdatePass(userData)
     console.log(response);
     if(response.status==200){
 
@@ -68,7 +69,7 @@ const handleSubmit = async (e) => {
 
     //reset all states datas
     setUser({
-      email: ""
+      pass: ""
    
     })
     
@@ -88,7 +89,7 @@ const handleSubmit = async (e) => {
   return (
     <div>
        <div className="gradient" >
-      <MDBContainer fluid style={{marginTop:"10px"}}>
+      <MDBContainer fluid style={{marginTop:"9px"}}>
       <div className='header-right ' style={{marginLeft:"91%"}}>
           
           <Link ><BsPersonCircle  className='icon mt-5'/></Link> 
@@ -97,22 +98,22 @@ const handleSubmit = async (e) => {
 <MDBRow className='d-flex justify-content-center align-items-center h-100'>
   <MDBCol col='12'>
 
-    <MDBCard className=' my-5 mx-auto border page bg-secondary' style={{backgroundColor:"rgba(255,255,255,0.55)",
-      borderRadius: '8px', maxWidth: '500px', boxShadow:'0 10px 16px 0 rgba(0, 0, 0, 0.5), 0 6px 20px 0 rgba(0, 0, 0, 0.22)',
+    <MDBCard className=' my-5 mx-auto border page bg-secondary' style={{
+      borderRadius: '8px',marginTop:"-2%", maxWidth: '500px', boxShadow:'0 10px 16px 0 rgba(0, 0, 0, 0.5), 0 6px 20px 0 rgba(0, 0, 0, 0.22)',
       backdropFilter:'blur(7.1px)'}}>
       <MDBCardBody className='p-5 w-100 d-flex flex-column mb-5'>
 
-    <h2 className="fw-bold mb-5 text-center" style={{color:'black'}}>Forget Password</h2>
+    <h2 className="fw-bold mb-5 text-center" style={{color:'black'}}>Update Password</h2>
 
-    <label className='  mb-3 ms-1' style={{ color: 'black' }} ><b>Enter Your Email</b></label>
+    <label className='  mb-3 ms-1' style={{ color: 'black' }} ><b>Enter New Password</b></label>
 
-    <MDBInput required onChange={userDetails} wrapperClass='mb-4 w-100' name='email' placeholder='Email address' id='formControlLg' type='email' size="lg"/>
+    <MDBInput required onChange={userDetails} wrapperClass='mb-4 w-100' name='pass' placeholder='Password' id='formControlLg' type='Password' size="lg"/>
    
  
-    <button size='lg' className='btn btn-primary  p-2 text-center mt-3  ' style={{ borderRadius: '5px',backgroundColor:"#378dfc",color:"white"}} onClick={handleSubmit}>
+    <button size='lg' className='btn btn-primary  p-2 text-center mt-3  ' style={{borderRadius:'5px',backgroundColor:"#378dfc",color:"white"}} onClick={handleSubmit}>
       Confirm
     </button>
-    <a href="/" ><button  size='lg' className='btn btn-primary  p-2 text-center mt-4  ' style={{borderRadius:'5px',width:"100%",backgroundColor:"#378dfc",color:"white"}} >
+    <a href="/reset" ><button  size='lg' className='btn btn-primary  p-2 text-center mt-4  ' style={{borderRadius:'5px',width:"100%",backgroundColor:"#378dfc",color:"white"}} >
       Go Back
     </button></a>
 
@@ -138,4 +139,4 @@ const handleSubmit = async (e) => {
   )
 }
 
-export default Passreset
+export default Updatepass

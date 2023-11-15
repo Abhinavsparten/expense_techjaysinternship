@@ -79,7 +79,7 @@ function AddExpense() {
       const response = await Addexpense(userData)
       console.log(response);
       if (response.status == 200) {
-
+        navigate('/dashboard')
 
         //reset all states datas
         setUser({
@@ -97,6 +97,7 @@ function AddExpense() {
         setErrorMsg(response.response.data)
       }
       alert(response.data.message);
+      
 
 
 
@@ -112,11 +113,11 @@ function AddExpense() {
 
       <MDBContainer fluid>
         <Header OpenSidebar={OpenSidebar} />
-        <MDBRow className='d-flex justify-content-center align-items-center h-100'>
+        <MDBRow className='d-flex justify-content-center align-items-center h-100 '>
           <MDBCol col='12'>
 
-            <MDBCard className='bg-white  mx-auto border' style={{ maxWidth: '500px' }}>
-              <MDBCardBody className='p-5 w-100 d-flex flex-column' style={{ marginTop: '-35px',marginBottom:"-39px" }}>
+            <MDBCard className='bg-secondary   mx-auto border' style={{ maxWidth: '500px',boxShadow:'0 10px 16px 0 rgba(0, 0, 0, 0.5), 0 6px 20px 0 rgba(0, 0, 0, 0.22)',marginTop:"-45px" }}>
+              <MDBCardBody className='p-5 w-100 d-flex flex-column' style={{ marginTop: '-32px',marginBottom:"-39px" }}>
 
                 <h2 className="fw-bold mb-1 text-center" style={{ color: 'black' }}>Add Expense</h2>
 
@@ -124,13 +125,14 @@ function AddExpense() {
                 <MDBInput required onChange={userDetails} wrapperClass='mb-4 w-100' name='reason' placeholder='Text' id='formControlLg' type='text' size="lg" />
                 <label className=' mb-1' style={{ color: 'black' }} ><b>Enter Category</b></label>
                 <select   name="category" id="cars" className='form-control mb-4' required onChange={userDetails} wrapperClass='mb-4 w-100 '  size="lg" style={{height:"50px"}} >
-                <option defaultValue disabled>
-                  Select Fruit
-                 </option>
-                  <option value="Food " >Food</option>
+      
+      
+                  <option value="Food" >Select Category</option>
+                  <option value="Food" >Food</option>
                   <option value="Travel">Travel</option>
                   <option value="Rent">Rent</option>
                   <option value="Medical">Medical</option>
+                  <option value="Recharge">Recharge</option>
                   <option value="Others">Others</option>
                 </select>
                 <label className=' mb-1' style={{ color: 'black' }} ><b>Enter Amount Rs</b></label>
@@ -139,7 +141,7 @@ function AddExpense() {
                 <MDBInput required onChange={userDetails} wrapperClass='mb-4 w-100' name='cdate' placeholder='cdate' id='formControlLg' type='date' size="lg" />
 
 
-                <button size='lg' className='btn btn-primary  p-2 text-center ' style={{ borderRadius: '5px' }} onClick={handleSubmit}>
+                <button size='lg' className='btn  p-2 text-center ' style={{ borderRadius: '5px',backgroundColor:"green",color:"white"}} onClick={handleSubmit}>
                   <BsPlusLg className='icon' /> Add Expense
                 </button>
 

@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css"
+import moment from 'moment';
 import {
   MDBBtn,
   MDBContainer,
@@ -18,7 +19,8 @@ import {
 import { BsPlusLg } from 'react-icons/bs'
 import Sidebar from '../Sidebar';
 import Header from '../Header';
-import { Addexpense } from '../../service/allapi';
+import { Editexpense, getsingleExp } from '../../service/allapi';
+
 
 function EditExpense() {
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false)
@@ -27,6 +29,17 @@ function EditExpense() {
     setOpenSidebarToggle(!openSidebarToggle)
   }
   const uid=localStorage.getItem("id")
+  // param id 
+  const{id} =useParams()
+  console.log(id);
+  //get details of the perticuler expense
+  const getoneExp=async()=>{
+    const {data}=await getsingleExp(id)
+    setUser(data);
+  
+
+  }
+
   //state to store api response erroe message
   const [errorMsg, setErrorMsg] = useState("")
 
@@ -55,7 +68,7 @@ function EditExpense() {
   }
   console.log(userData);
 
-  const handleSubmit = async (e) => {
+  const handleEdit = async (e) => {
     e.preventDefault()
     const { reason,category, amount, cdate, uid } = userData
 
@@ -75,9 +88,11 @@ function EditExpense() {
     else {
 
       //api call
-      const response = await Addexpense(userData)
-      console.log(response);
+      const response = await Editexpense(id,userData)
+      // console.log(response);
       if (response.status == 200) {
+        alert(response.data.message);
+        navigate('/dashboard')
 
 
         //reset all states datas
@@ -95,13 +110,17 @@ function EditExpense() {
       } else {
         setErrorMsg(response.response.data)
       }
-      alert(response.data.message);
-
-
-
+     
 
     }
   }
+  
+  useEffect(()=>{
+ 
+    getoneExp()
+    
+   
+  },[])
   return (
     <div className='d-flex'>
       <div className='grid-container'>
@@ -113,29 +132,29 @@ function EditExpense() {
         <Header OpenSidebar={OpenSidebar} />
         <MDBRow className='d-flex justify-content-center align-items-center h-100'>
           <MDBCol col='12'>
-
-            <MDBCard className='bg-white  mx-auto border' style={{ maxWidth: '500px' }}>
+          <MDBCard className='bg-secondary   mx-auto border' style={{ maxWidth: '500px',boxShadow:'0 10px 16px 0 rgba(0, 0, 0, 0.5), 0 6px 20px 0 rgba(0, 0, 0, 0.22)',marginTop:"-45px"}}>
               <MDBCardBody className='p-5 w-100 d-flex flex-column' style={{ marginTop: '-35px',marginBottom:"-39px" }}>
 
                 <h2 className="fw-bold mb-1 text-center" style={{ color: 'black' }}>Edit Expense</h2>
 
                 <label className='  mb-1' style={{ color: 'black' }} ><b>Enter Text</b></label>
-                <MDBInput required onChange={userDetails} wrapperClass='mb-4 w-100' name='reason' placeholder='Text' id='formControlLg' type='text' size="lg" />
+                <MDBInput required value={userData.reason} onChange={userDetails} wrapperClass='mb-4 w-100' name='reason' placeholder='Text' id='formControlLg' type='text' size="lg" />
                 <label className=' mb-1' style={{ color: 'black' }} ><b>Enter Category</b></label>
-                <select   name="category" id="cars" className='form-control mb-4' required onChange={userDetails} wrapperClass='mb-4 w-100 '  size="lg" style={{height:"50px"}} >
+                <select value={userData.category}   name="category" id="cars" className='form-control mb-4' required onChange={userDetails} wrapperClass='mb-4 w-100 '  size="lg" style={{height:"50px"}} >
                   <option value="Food " >Food</option>
                   <option value="Travel">Travel</option>
                   <option value="Rent">Rent</option>
                   <option value="Rent">Medical</option>
+                  <option value="Recharge">Recharge</option>
                   <option value="Others">Others</option>
                 </select>
                 <label className=' mb-1' style={{ color: 'black' }} ><b>Enter Amount Rs</b></label>
-                <MDBInput required onChange={userDetails} wrapperClass='mb-4 w-100' name='amount' placeholder='Amount' id='formControlLg' type='text' size="lg" />
+                <MDBInput value={userData.amount} required onChange={userDetails} wrapperClass='mb-4 w-100' name='amount' placeholder='Amount' id='formControlLg' type='text' size="lg" />
                 <label className=' mb-1' style={{ color: 'black' }} ><b>Enter Date</b></label>
-                <MDBInput required onChange={userDetails} wrapperClass='mb-4 w-100' name='cdate' placeholder='cdate' id='formControlLg' type='date' size="lg" />
+                <MDBInput value={moment(userData.cdate).format("YYYY-MM-DD")} required onChange={userDetails} wrapperClass='mb-4 w-100' name='cdate' placeholder='cdate' id='formControlLg' type='date' size="lg" />
 
 
-                <button size='lg' className='btn btn-primary  p-2 text-center ' style={{ borderRadius: '5px' }} onClick={handleSubmit}>
+                <button size='lg' className='btn btn-primary  p-2 text-center ' style={{ borderRadius: '5px',backgroundColor:"green",color:"white"}} onClick={handleEdit}>
                   <BsPlusLg className='icon' /> Update
                 </button>
 

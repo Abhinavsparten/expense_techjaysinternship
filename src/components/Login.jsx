@@ -1,7 +1,7 @@
 import React, { useState ,useEffect} from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css"
 import {
   MDBBtn,
@@ -15,9 +15,14 @@ import {
   MDBCheckbox
 }
 from 'mdb-react-ui-kit';
+import 
+ { BsPersonCircle} from 'react-icons/bs'
+import Modal from 'react-bootstrap/Modal';
 import { loginUser } from '../service/allapi';
 
+
 function Login() {
+  const [smShow, setSmShow] = useState(false);
 
   //state to store api response erroe message
   const [errorMsg,setErrorMsg]=useState("")
@@ -64,6 +69,7 @@ function Login() {
       if(response.status==200){
         if(response.data.message === "login Successfull"){
           localStorage.setItem("email",email)
+          localStorage.setItem('token', response.data.token);
           alert(response.data.message);
           navigate('dashboard')
          
@@ -96,25 +102,31 @@ function Login() {
       }
     },[navigate])
   return (
-    <div>
-        <div className="gradient-custom-2" style={{ backgroundColor: '#9de2ff' }}>
-      <MDBContainer fluid style={{marginTop:"26px"}}>
+    <div className='gradient' >
+           <div >
+   <MDBContainer fluid >
+   <div className='header-right ' style={{marginLeft:"91%"}}>
+          
+           <Link onClick={() => setSmShow(true)}><BsPersonCircle  className='icon mt-5'/>
+           </Link> 
+        </div>
 
-<MDBRow className='d-flex justify-content-center align-items-center h-100'>
-  <MDBCol col='12'>
+<MDBRow className='d-flex justify-content-center align-items-center h-100 '>
+<MDBCol col='12'>
 
-    <MDBCard className='bg-white my-5 mx-auto border' style={{borderRadius: '8px', maxWidth: '500px', boxShadow:'0 10px 16px 0 rgba(0, 0, 0, 0.5), 0 6px 20px 0 rgba(0, 0, 0, 0.22)'}}>
-      <MDBCardBody className='p-5 w-100 d-flex flex-column'>
+ <MDBCard className=' my-5 mx-auto border page bg-secondary' style={{backgroundColor:"rgba(255,255,255,0.55)",
+   borderRadius: '8px', maxWidth: '500px', boxShadow:'0 10px 16px 0 rgba(0, 0, 0, 0.5), 0 6px 20px 0 rgba(0, 0, 0, 0.22)',
+   }}>
+   <MDBCardBody className='p-5 w-100 d-flex flex-column mt-1'>
 
-        <h2 className="fw-bold mb-2 text-center" style={{color:'black'}}>Sign in</h2>
-        <p className="text-white-50 mb-3" style={{color:'black'}}>Please enter your login and password!</p>
+        <h2 className="fw-bold mb-5 text-center" style={{color:'black'}}>Sign in</h2>
 
         <MDBInput required onChange={userDetails} wrapperClass='mb-4 w-100' name='email' placeholder='Email address' id='formControlLg' type='email' size="lg"/>
         <MDBInput required onChange={userDetails} wrapperClass='mb-4 w-100' name='psw' placeholder='Password' id='formControlLg' type='password' size="lg"/>
         <p className="medium mb-2  pb-lg-3 text-center"><a style={{textDecoration:'none',color:'orange'}}  href="/reset">Forgot password?</a></p>
      
 
-        <button size='lg' className='btn btn-primary  p-2 text-center  ' style={{borderRadius:'5px'}} onClick={handleSubmit}>
+        <button size='lg' className='btn btn-primary  p-2 text-center  ' style={{ borderRadius: '5px',backgroundColor:"#378dfc",color:"white"}}  onClick={handleSubmit}>
           login
         </button>
 
@@ -135,6 +147,26 @@ function Login() {
 </MDBRow>
 
 </MDBContainer>
+<Modal 
+        size="sm"
+        show={smShow}
+        onHide={() => setSmShow(false)}
+        aria-labelledby="example-modal-sizes-title-sm"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="example-modal-sizes-title-sm">
+            Demo 
+          </Modal.Title>
+  
+
+        </Modal.Header>
+        <Modal.Body>
+     <p className='text-dark'>   Email: abhinavmulloli1@gmail.com </p>
+     <p className='text-dark' >  Password: 1234 </p></Modal.Body>
+        <Modal.Footer >
+    
+        </Modal.Footer>
+      </Modal>
 
     </div>
     <ToastContainer position="top-center" />

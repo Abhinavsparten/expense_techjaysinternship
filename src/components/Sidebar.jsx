@@ -1,4 +1,6 @@
-import React from 'react'
+import { useState } from 'react';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
 import 
 {BsCart3, BsGrid1X2Fill, BsFillPersonXFill, BsFillGrid3X3GapFill, BsFillTrash3Fill, 
   BsListCheck, BsMenuButtonWideFill, BsFillGearFill,BsFillClipboardPlusFill, BsCreditCard2Front,}
@@ -6,27 +8,62 @@ import
 import { Link,useNavigate } from 'react-router-dom'
 import { deleteAcc } from '../service/allapi'
 
+
+
 function Sidebar({openSidebarToggle, OpenSidebar}) {
     const navigate= useNavigate()
+    const [smShow, setSmShow] = useState(false);
+
+
+
    //log out
     const logoutHandler = () =>{
         localStorage.removeItem('email')
+        localStorage.removeItem('token')
+        localStorage.removeItem('id')
         navigate('/')
     }
    //delete acc
    const deleteHandler = () =>{
-    const uid=localStorage.getItem("id")
+    const id=localStorage.getItem("id")
+    console.log(id);
     const deteleAccCall=async()=>{
-        const response=await deleteAcc(uid)
-        alert(response.data)
+        const response=await deleteAcc(id)
+        if (response.status == 200) {
+            alert("Account Deleted")
+        }
+    }
         deteleAccCall()
+        localStorage.removeItem('email')
+        localStorage.removeItem('token')
+        localStorage.removeItem('id')
+        
     
     navigate('/')
-    }
+  
 }
 
   return (
     <aside id="sidebar" className={openSidebarToggle ? "sidebar-responsive": ""}>
+           <Modal
+        size="sm"
+        show={smShow}
+        onHide={() => setSmShow(false)}
+        aria-labelledby="example-modal-sizes-title-sm"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="example-modal-sizes-title-sm">
+            
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body><h3 className='text-center text-dark b'>Are You Sure ?</h3></Modal.Body>
+        <Modal.Footer >
+          <Button variant="secondary" style={{ borderRadius: '10px',
+          backgroundColor:"red",color:"white",marginLeft:"-50px"}} onClick={() => setSmShow(false)}>Close</Button>
+          <Button variant="primary" style={{ borderRadius: '10px',
+          backgroundColor:"green",color:"white"}} onClick={deleteHandler}>Confirm</Button>
+        </Modal.Footer>
+      </Modal>
         <div className='sidebar-title'>
             <div className='sidebar-brand'>
                 <BsCart3  className='icon_header'/> Tracker
@@ -65,7 +102,7 @@ function Sidebar({openSidebarToggle, OpenSidebar}) {
             </li>
             
             <li className='sidebar-list-item'>
-            <Link to='/' onClick={deleteHandler}>
+            <Link   onClick={() => setSmShow(true)}>
                     <BsFillTrash3Fill className='icon'/> Delete Account
                     </Link>
             </li>

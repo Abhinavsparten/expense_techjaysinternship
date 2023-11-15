@@ -1,143 +1,199 @@
-import React from 'react'
-import 
-{ BsFillArchiveFill, BsFillGrid3X3GapFill, BsPeopleFill, BsFillBellFill}
- from 'react-icons/bs'
- import 
- { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line } 
- from 'recharts';
+import React, { useState, useEffect } from "react";
+import Chart from "react-apexcharts";
+import { BsFillArchiveFill, BsFillGrid3X3GapFill, BsPeopleFill, BsFillBellFill }
+  from 'react-icons/bs'
+import { getTransactions } from "../service/allapi";
+import TableExp from "./Sections/TableExp";
+import {BsCurrencyRupee}  from 'react-icons/bs'
+
 
 function Home() {
 
-    const data = [
-        {
-          name: 'Page A',
-          uv: 4000,
-          pv: 2400,
-          amt: 2400,
-          
-        },
-        {
-          name: 'Page B',
-          uv: 3000,
-          pv: 1398,
-          amt: 2210,
-        },
-        {
-          name: 'Page C',
-          uv: 2000,
-          pv: 9800,
-          amt: 2290,
-        },
-        {
-          name: 'Page D',
-          uv: 2780,
-          pv: 3908,
-          amt: 2000,
-        },
-        {
-          name: 'Page E',
-          uv: 1890,
-          pv: 4800,
-          amt: 2181,
-        },
-        {
-          name: 'Page F',
-          uv: 2390,
-          pv: 3800,
-          amt: 2500,
-        },
-        {
-          name: 'Page G',
-          uv: 3490,
-          pv: 4300,
-          amt: 2100,
-        },
-      ];
-     
+  const data = [
+    {
+      name: 'Page A',
+      uv: 4000,
+      pv: 2400,
+      amt: 2400,
+
+    },
+    {
+      name: 'Page B',
+      uv: 3000,
+      pv: 1398,
+      amt: 2210,
+    },
+    {
+      name: 'Page C',
+      uv: 2000,
+      pv: 9800,
+      amt: 2290,
+    },
+    {
+      name: 'Page D',
+      uv: 2780,
+      pv: 3908,
+      amt: 2000,
+    },
+    {
+      name: 'Page E',
+      uv: 1890,
+      pv: 4800,
+      amt: 2181,
+    },
+    {
+      name: 'Page F',
+      uv: 2390,
+      pv: 3800,
+      amt: 2500,
+    },
+    {
+      name: 'Page G',
+      uv: 3490,
+      pv: 4300,
+      amt: 2100,
+    },
+  ];
+  const categories = ["Food",
+    "Travel",
+    "Rent",
+    "Medical",
+    "Recharge",
+    "Others",
+    ]
+
+  const uid = localStorage.getItem("id")
+
+
+  const [expense, setExp] = useState([]);
+
+  //create an object to store datas from input
+  const [userData, setUser] = useState({
+
+    uid: uid
+
+  })
+  let amount = [];
+  
+ 
+  const getalldata = async () => {
+    const response = await getTransactions(userData)
+    setExp(response.data)
+   
+  }
+  const noOfexp=(expense.length-1)
+ 
+  //total expense
+  const totalExp=expense.reduce((acc, t) => acc + t.amount, 0)
+   
+  //total food
+const totalFood=expense.filter(
+(f) => f.category ==="Food").reduce((acc, t) => acc + t.amount, 0)
+  //total Travel
+const totalTravel=expense.filter(
+(f) => f.category ==="Travel").reduce((acc, t) => acc + t.amount, 0)
+    //total Rent
+const totalRent=expense.filter(
+(f) => f.category ==="Rent").reduce((acc, t) => acc + t.amount, 0)
+   //total medical
+const totalMedical=expense.filter(
+(f) => f.category ==="Medical").reduce((acc, t) => acc + t.amount, 0)
+  //total recharge
+const totalRecharge=expense.filter(
+  (f) => f.category ==="Recharge").reduce((acc, t) => acc + t.amount, 0)
+//total Others
+const totalOthers=expense.filter(
+(f) => f.category ==="Others").reduce((acc, t) => acc + t.amount, 0)
+
+amount=[totalFood,totalTravel,totalRent,totalMedical,totalRecharge,totalOthers]
+
+  useEffect(() => {
+  
+   
+    getalldata();
+
+  }, []);
+
 
   return (
+  
     <main className='main-container'>
-        <div className='main-title'>
-            <h3>DASHBOARD</h3>
-        </div>
+      <div className='main-title'>
+        <h3 className="text-dark">DASHBOARD</h3>
+      </div>
 
-        <div className='main-cards'>
-            <div className='card'>
-                <div className='card-inner'>
-                    <h3>EXPENSES</h3>
-                    <BsFillArchiveFill className='card_icon'/>
-                </div>
-                <h1>300</h1>
-            </div>
-            <div className='card'>
-                <div className='card-inner'>
-                    <h3>CATEGORIES</h3>
-                    <BsFillGrid3X3GapFill className='card_icon'/>
-                </div>
-                <h1>12</h1>
-            </div>
-            <div className='card'>
-                <div className='card-inner'>
-                    <h3>CUSTOMERS</h3>
-                    <BsPeopleFill className='card_icon'/>
-                </div>
-                <h1>33</h1>
-            </div>
-            <div className='card'>
-                <div className='card-inner'>
-                    <h3>ALERTS</h3>
-                    <BsFillBellFill className='card_icon'/>
-                </div>
-                <h1>42</h1>
-            </div>
+      <div className='main-cards'>
+        <div className='card'>
+          <div className='card-inner'>
+            <h3 className="text-dark">TOTAL EXPENSE</h3>
+            <BsFillArchiveFill className='card_icon' />
+          </div>
+          <h1>{totalExp}<BsCurrencyRupee className='icon'/></h1>
         </div>
+        <div className='card'>
+          <div className='card-inner'>
+            <h3 className="text-dark">CATEGORIES</h3>
+            <BsFillGrid3X3GapFill className='card_icon' />
+          </div>
+          <h1>6</h1>
+        </div>
+        <div className='card'>
+          <div className='card-inner'>
+            <h3 className="text-dark">EXPENSES ADDED</h3>
+            <BsPeopleFill className='card_icon' />
+          </div>
+          <h1>{noOfexp}</h1>
+        </div>
+        <div className='card'>
+          <div className='card-inner'>
+            <h3 className="text-dark">ALERTS</h3>
+            <BsFillBellFill className='card_icon' />
+          </div>
+          <h1>8</h1>
+        </div>
+      </div>
 
-        <div className='charts'>
-            <ResponsiveContainer width="100%" height="100%">
-            <BarChart
-            width={500}
-            height={300}
-            data={data}
-            margin={{
-                top: 5,
-                right: 30,
-                left: 20,
-                bottom: 5,
-            }}
+      <div className='charts'>
+        <React.Fragment>
+          <div className=" mb-3 text-white fontspie " style={{ marginLeft: "-20px" }}>
+            <h3 className="mt-3 ms-5 text-dark">Analysis Of Expenses </h3>
+            <Chart  className='d-flex text-white pies '
+              type="pie"
+             series={amount}
+             
+
+              options={{
+                title: {
+                  text: "Category Wise Expenses"
+                },
+                responsive: [
+                  {
+                    breakpoint: 1000,
+                    options: {
+                      plotOptions: {
+                        bar: {
+                          horizontal: false
+                        }
+                      },
+                      legend: {
+                        position: "bottom"
+                      }
+                    }
+                  }
+                ],
+                noData: { text: "Empty Data" },
+                // colors:["#f90000","#f0f"],
+                labels: categories
+
+              }}
             >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="pv" fill="#8884d8" />
-                <Bar dataKey="uv" fill="#82ca9d" />
-                </BarChart>
-            </ResponsiveContainer>
+            </Chart>
+          </div>
+        </React.Fragment>
 
-            <ResponsiveContainer width="100%" height="100%">
-                <LineChart
-                width={500}
-                height={300}
-                data={data}
-                margin={{
-                    top: 5,
-                    right: 30,
-                    left: 20,
-                    bottom: 5,
-                }}
-                >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{ r: 8 }} />
-                <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
-                </LineChart>
-            </ResponsiveContainer>
 
-        </div>
+      </div>
+      <TableExp></TableExp>
     </main>
   )
 }

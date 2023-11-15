@@ -1,9 +1,8 @@
 import React, { useState,useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
-import { useNavigate } from 'react-router-dom';
-  
+import { BsPersonCircle} from 'react-icons/bs'
+import { Link, useNavigate } from 'react-router-dom';
 import {
   MDBBtn,
   MDBContainer,
@@ -99,23 +98,30 @@ function Register() {
     }
   },[navigate])
   return (
+    <div className="gradient " >
     <div>
-      <div className="gradient-custom-2" style={{ backgroundColor: '#9de2ff' }}>
-          <MDBContainer fluid style={{marginTop:"26px"}}>
+   <MDBContainer fluid style={{marginTop:"2px"}}>
+   <div className='header-right ' style={{marginLeft:"91%"}}>
+          
+          <Link ><BsPersonCircle  className='icon mt-5'/></Link> 
+       </div>
 
 <MDBRow className='d-flex justify-content-center align-items-center h-100'>
-  <MDBCol col='12'>
+<MDBCol col='12'>
 
-    <MDBCard className='bg-white my-5 mx-auto' style={{borderRadius: '8px', maxWidth: '500px',boxShadow:'0 10px 16px 0 rgba(0, 0, 0, 0.5), 0 6px 20px 0 rgba(0, 0, 0, 0.22)'}}>
-      <MDBCardBody className='p-5 w-100 d-flex flex-column'>
+ <MDBCard className=' my-5 mx-auto border bg-secondary' style={{backgroundColor:"rgba(255,255,255,0.55)",
+   borderRadius: '8px', maxWidth: '500px', boxShadow:'0 10px 16px 0 rgba(0, 0, 0, 0.5), 0 6px 20px 0 rgba(0, 0, 0, 0.22)',
+   }}>
+   <MDBCardBody className='p-5 w-100 d-flex flex-column mt-1'>
 
-        <h2 className="fw-bold mb-2 text-center " style={{color:'black'}}>Register</h2>
-        <p className="text-white-50 mb-3">Please enter your login and password!</p>
+        <h2 className="fw-bold mb-5 text-center " style={{color:'black'}}>Register</h2>
+      
         <MDBInput required onChange={userDetails} name='uname' wrapperClass='mb-4 w-100'  placeholder='User Name' id='formControlLg' type='text' size="lg"/>
         <MDBInput required onChange={userDetails} name='email' wrapperClass='mb-4 w-100' placeholder='Email address' id='formControlLg' type='email' size="lg"/>
-        <MDBInput required onChange={userDetails} name='psw' wrapperClass='mb-4 w-100' placeholder='Password' id='formControlLg' type='password' size="lg"/>
+        <MDBInput required onChange={userDetails} name='psw' wrapperClass='mb-3 w-100' placeholder='Password' id='formControlLg' type='password' size="lg"/>
+        <p className="medium mb-2  pb-lg-3 text-center"><a style={{textDecoration:'none',color:'orange'}}  href="/">Back to Login</a></p>
 
-        <button size='lg' className='btn btn-primary  p-2 text-center mt-1 ' style={{borderRadius:'5px'}} onClick={handleSubmit}>
+        <button size='lg' className='btn btn-primary  p-2 text-center  ' style={{ borderRadius: '5px',backgroundColor:"#378dfc",color:"white"}} onClick={handleSubmit}>
           Register
         </button>
     
