@@ -6,7 +6,6 @@ import { getTransactions } from "../service/allapi";
 import TableExp from "./Sections/TableExp";
 import {BsCurrencyRupee}  from 'react-icons/bs'
 
-
 function Home() {
 
   const data = [
@@ -112,7 +111,7 @@ amount=[totalFood,totalTravel,totalRent,totalMedical,totalRecharge,totalOthers]
    
     getalldata();
 
-  }, []);
+  }, [userData]);
 
 
   return (

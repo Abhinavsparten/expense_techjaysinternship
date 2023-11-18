@@ -20,16 +20,19 @@ import { ResetPass } from '../service/allapi';
 
 function Passreset() {
 
-  const uid=localStorage.getItem("id")
-
+    
+  const [focus,setFocus] = useState({
+    errName : false,
+    errEmail : false,
+   
+  })
   
     //state to store api response erroe message
   const [errorMsg,setErrorMsg]=useState("")
 
   //create an object to store datas from input
   const [userData, setUser] = useState({
-    email: "",
-    uid
+    email: ""
 
   })
     //object for useNavigate
@@ -50,7 +53,7 @@ console.log(userData);
 
 const handleSubmit = async (e) => {
   e.preventDefault()
-  const { email,uid } = userData
+  const { email } = userData
   
  if (email == "") {
     toast.error('email requierd')
@@ -62,8 +65,10 @@ const handleSubmit = async (e) => {
     const response = await ResetPass(userData)
     console.log(response);
     if(response.status==200){
-
-      alert(response.data.message);
+   toast.success(response.data.message);
+        setTimeout(()=> {
+          navigate('/')
+        }, 2000);
   
 
     //reset all states datas
@@ -72,23 +77,18 @@ const handleSubmit = async (e) => {
    
     })
     
-
     //redirection to home
       
     }else{
-      setErrorMsg(response.response.data)
+      toast.error(response.data.message)
     }
-    alert(response.data.message);
-    
-
-
   }
   }
 
   return (
     <div>
        <div className="gradient" >
-      <MDBContainer fluid style={{marginTop:"10px"}}>
+      <MDBContainer fluid style={{marginTop:"2px"}}>
       <div className='header-right ' style={{marginLeft:"91%"}}>
           
           <Link ><BsPersonCircle  className='icon mt-5'/></Link> 
@@ -97,17 +97,18 @@ const handleSubmit = async (e) => {
 <MDBRow className='d-flex justify-content-center align-items-center h-100'>
   <MDBCol col='12'>
 
-    <MDBCard className=' my-5 mx-auto border page bg-secondary' style={{backgroundColor:"rgba(255,255,255,0.55)",
-      borderRadius: '8px', maxWidth: '500px', boxShadow:'0 10px 16px 0 rgba(0, 0, 0, 0.5), 0 6px 20px 0 rgba(0, 0, 0, 0.22)',
-      backdropFilter:'blur(7.1px)'}}>
+  <MDBCard className=' my-5 pageb  mx-auto border  bg-white' style={{backgroundColor:"rgba(255,255,255,0.55)",
+   borderRadius: '2px', maxWidth: '430px',maxHeight:'516px', boxShadow:'0 10px 16px 0 rgba(0, 0, 0, 0.5), 0 6px 20px 0 rgba(0, 0, 0, 0.22)',
+   }}>
       <MDBCardBody className='p-5 w-100 d-flex flex-column mb-5'>
 
     <h2 className="fw-bold mb-5 text-center" style={{color:'black'}}>Forget Password</h2>
 
     <label className='  mb-3 ms-1' style={{ color: 'black' }} ><b>Enter Your Email</b></label>
-
-    <MDBInput required onChange={userDetails} wrapperClass='mb-4 w-100' name='email' placeholder='Email address' id='formControlLg' type='email' size="lg"/>
-   
+    <div>
+    <input required onBlur={()=>setFocus({...focus,errEmail : true})} focus ={focus.errEmail.toString()}  className='form-control mb-3  w-100' onChange={userDetails} name='email'  placeholder='Email address' id='formControlLg' type='email' size="lg"/>
+         <span  className='ms-2'>Enter a valid email id</span>
+         </div>
  
     <button size='lg' className='btn btn-primary  p-2 text-center mt-3  ' style={{ borderRadius: '5px',backgroundColor:"#378dfc",color:"white"}} onClick={handleSubmit}>
       Confirm

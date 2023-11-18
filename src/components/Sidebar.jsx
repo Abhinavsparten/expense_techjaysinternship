@@ -2,11 +2,13 @@ import { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import 
-{BsCart3, BsGrid1X2Fill, BsFillPersonXFill, BsFillGrid3X3GapFill, BsFillTrash3Fill, 
-  BsListCheck, BsMenuButtonWideFill, BsFillGearFill,BsFillClipboardPlusFill, BsCreditCard2Front,}
+{BsCart3, BsGrid1X2Fill, BsFillPersonXFill, BsFillTrash3Fill, 
+ BsMenuButtonWideFill, BsFillClipboardPlusFill, BsCreditCard2Front,}
  from 'react-icons/bs'
 import { Link,useNavigate } from 'react-router-dom'
 import { deleteAcc } from '../service/allapi'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 
@@ -21,6 +23,7 @@ function Sidebar({openSidebarToggle, OpenSidebar}) {
         localStorage.removeItem('email')
         localStorage.removeItem('token')
         localStorage.removeItem('id')
+        localStorage.removeItem('user')
         navigate('/')
     }
    //delete acc
@@ -30,16 +33,19 @@ function Sidebar({openSidebarToggle, OpenSidebar}) {
     const deteleAccCall=async()=>{
         const response=await deleteAcc(id)
         if (response.status == 200) {
-            alert("Account Deleted")
+            toast.success(response.data.message);
+            setTimeout(()=> {
+              navigate('/')
+            }, 1500);
         }
     }
         deteleAccCall()
         localStorage.removeItem('email')
         localStorage.removeItem('token')
         localStorage.removeItem('id')
-        
+        localStorage.removeItem('user')
     
-    navigate('/')
+ 
   
 }
 
@@ -107,7 +113,10 @@ function Sidebar({openSidebarToggle, OpenSidebar}) {
                     </Link>
             </li>
         </ul>
+            
+    <ToastContainer position="top-center" />
     </aside>
+    
   )
 }
 

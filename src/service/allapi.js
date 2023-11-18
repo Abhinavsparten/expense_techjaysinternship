@@ -5,6 +5,10 @@ import { commonRequest } from "./commonReq";
 export const registerUser=async(body)=>{
     return await commonRequest("POST",`${BASE_URL}/users/register`,body)
 }
+//Verify email
+export const Verifyemail=async(body)=>{
+    return await commonRequest("POST",`${BASE_URL}/users/verifymail`,body)
+}
 
 //login
 export const loginUser=async(body)=>{

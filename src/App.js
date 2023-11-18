@@ -11,6 +11,8 @@ import Reports from './components/Sections/Reports';
 import Passreset from './components/Passreset';
 import Updatepass from './components/Updatepass';
 import Generatepdf from './components/Sections/Generatepdf';
+import Verifyemail from './components/Verifyemail';
+
 
 
 function App() {
@@ -19,8 +21,9 @@ function App() {
     <div className="App">
   
        <Routes>
-      <Route path='/' element={<Login/>}></Route>  
-      <Route path='register' element={<Register/>}></Route> 
+      <Route path='/' element={<Login/>}></Route>
+      <Route path='registeruser/:email' element={<Register/>}></Route> 
+      <Route path='verify' element={<Verifyemail/>}></Route> 
       <Route path='dashboard' element={<ProtectedRoutes><Dashboard/></ProtectedRoutes>}></Route>
       <Route path='addexp' element={<AddExpense/>}></Route>
       <Route path='editexp/:id' element={<EditExpense/>}></Route>

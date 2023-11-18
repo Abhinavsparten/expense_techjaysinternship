@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css"
 import { BsPersonCircle} from 'react-icons/bs'
 import {
@@ -16,27 +16,23 @@ import {
   MDBCheckbox
 }
 from 'mdb-react-ui-kit';
-import { UpdatePass } from '../service/allapi';
+import { Verifyemail } from '../service/allapi';
 
-function Updatepass() {
+function Passreset() {
 
-
-const{id} =useParams()
-
-  
-const [focus,setFocus] = useState({
-  errName : false,
-  errEmail : false,
-  errPass : false
-})
+    
+  const [focus,setFocus] = useState({
+    errName : false,
+    errEmail : false,
+   
+  })
   
     //state to store api response erroe message
   const [errorMsg,setErrorMsg]=useState("")
 
   //create an object to store datas from input
   const [userData, setUser] = useState({
-   pass:"",
-   id:id
+    email: ""
 
   })
     //object for useNavigate
@@ -57,44 +53,42 @@ console.log(userData);
 
 const handleSubmit = async (e) => {
   e.preventDefault()
-  const { pass,id } = userData
+  const { email } = userData
   
- if (pass == "") {
-    toast.error('Password requierd')
+ if (email == "") {
+    toast.error('email requierd')
   }
  
   else {
    
     //api call
-    const response = await UpdatePass(userData)
+    const response = await Verifyemail(userData)
     console.log(response);
     if(response.status==200){
-      toast.success(response.data.message);
+   toast.success(response.data.message);
         setTimeout(()=> {
           navigate('/')
-        }, 1500);
+        }, 2000);
   
 
     //reset all states datas
     setUser({
-      pass: ""
+      email: ""
    
     })
     
-
     //redirection to home
       
     }else{
-      toast.error(response.data.message);
+      toast.error(response.data.message)
     }
-
   }
   }
 
   return (
     <div>
        <div className="gradient" >
-      <MDBContainer fluid style={{marginTop:"9px"}}>
+      <MDBContainer fluid style={{marginTop:"2px"}}>
       <div className='header-right ' style={{marginLeft:"91%"}}>
           
           <Link ><BsPersonCircle  className='icon mt-5'/></Link> 
@@ -103,26 +97,23 @@ const handleSubmit = async (e) => {
 <MDBRow className='d-flex justify-content-center align-items-center h-100'>
   <MDBCol col='12'>
 
-   
-         <MDBCard className=' my-5 pageb mx-auto border  bg-white' style={{backgroundColor:"rgba(255,255,255,0.55)",
-   borderRadius: '2px', maxWidth: '430px',maxHeight:'515px', boxShadow:'0 10px 16px 0 rgba(0, 0, 0, 0.5), 0 6px 20px 0 rgba(0, 0, 0, 0.22)',
+  <MDBCard className=' my-5 pageb mx-auto border  bg-white' style={{backgroundColor:"rgba(255,255,255,0.55)",
+   borderRadius: '2px', maxWidth: '430px',maxHeight:'516px', boxShadow:'0 10px 16px 0 rgba(0, 0, 0, 0.5), 0 6px 20px 0 rgba(0, 0, 0, 0.22)',
    }}>
       <MDBCardBody className='p-5 w-100 d-flex flex-column mb-5'>
 
-    <h2 className="fw-bold mb-5 text-center" style={{color:'black'}}>Update Password</h2>
+    <h2 className="fw-bold mb-5 text-center" style={{color:'black'}}>Verify Email</h2>
 
-    <label className='  mb-3 ms-1' style={{ color: 'black' }} ><b>Enter New Password</b></label>
+    <label className='  mb-3 ms-1' style={{ color: 'black' }} ><b>Enter Your Email</b></label>
     <div>
-    <input required  onBlur={()=>setFocus({...focus,errPass : true})} focus ={focus.errPass.toString()}  pattern='^(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$'
-     className='form-control mb-3  w-100' onChange={userDetails} name='pass' placeholder='Password' id='formControlLg' type='password' size="lg"/>
-         <span className='ms-2 '>it must have minimum 8 characters and include atleast 1 uppercase and 1 Special character</span>
+    <input required onBlur={()=>setFocus({...focus,errEmail : true})} focus ={focus.errEmail.toString()}  className='form-control mb-3  w-100' onChange={userDetails} name='email'  placeholder='Email address' id='formControlLg' type='email' size="lg"/>
+         <span  className='ms-2'>Enter a valid email id</span>
          </div>
-         
  
-    <button size='lg' className='btn btn-primary  p-2 text-center mt-3  ' style={{borderRadius:'5px',backgroundColor:"#378dfc",color:"white"}} onClick={handleSubmit}>
+    <button size='lg' className='btn btn-primary  p-2 text-center mt-3  ' style={{ borderRadius: '5px',backgroundColor:"#378dfc",color:"white"}} onClick={handleSubmit}>
       Confirm
     </button>
-    <a href="/reset" ><button  size='lg' className='btn btn-primary  p-2 text-center mt-3' style={{borderRadius:'5px',width:"100%",backgroundColor:"#378dfc",color:"white"}} >
+    <a href="/" ><button  size='lg' className='btn btn-primary  p-2 text-center mt-4  ' style={{borderRadius:'5px',width:"100%",backgroundColor:"#378dfc",color:"white"}} >
       Go Back
     </button></a>
 
@@ -148,4 +139,4 @@ const handleSubmit = async (e) => {
   )
 }
 
-export default Updatepass
+export default Passreset

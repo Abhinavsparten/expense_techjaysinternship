@@ -1,15 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import Table from 'react-bootstrap/Table';
-import {DatePicker,Form,Select} from "antd";
+import {DatePicker,Select} from "antd";
 import moment from 'moment';
 import {BsArrowRightShort,BsArrowLeftShort,BsPencilSquare,BsFillTrash3Fill,BsSearch} from 'react-icons/bs'
-import {
-  MDBBtn,
-  MDBContainer,
-  MDBRow,
-  MDBCol, 
-}
-  from 'mdb-react-ui-kit';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { deleteExp, getHIstory } from '../../service/allapi';
 import { Link } from 'react-router-dom';
 
@@ -77,7 +72,11 @@ function TableExp() {
    const res=await deleteExp(id)
    if(res.status==200){
     setDeleteData(res.data)
-    getHIstoryCall()
+    toast.success("Expense deleted");
+    setTimeout(()=> {
+      getHIstoryCall()
+    }, 1500);
+    
      }
   
    }
@@ -97,7 +96,7 @@ function TableExp() {
         
           <div className='ms-3'>
           <h6>Select Frequency</h6>
-          <Select value={frequency} onChange={(values) => setFrequency(values)}>
+          <Select value={frequency} onChange={(values) => setFrequency(values)} className='sel'>
             <Select.Option value="7">LAST 1 Week</Select.Option>
             <Select.Option value="30">LAST 1 Month</Select.Option>
             <Select.Option value="365">LAST 1 year</Select.Option>
@@ -112,7 +111,7 @@ function TableExp() {
         </div>
             <div className=' ms-4'>
               <h6>Select Category</h6>
-              <Select value={category} onChange={(values) => setCategory(values)} >
+              <Select value={category} onChange={(values) => setCategory(values)} className='sel' >
                 <Select.Option  value='all'>All data </Select.Option>
                 <Select.Option value='Food'>Food</Select.Option>
                 <Select.Option value='Travel'>Travel</Select.Option>
@@ -185,6 +184,7 @@ function TableExp() {
       </li>
     </ul>
   </nav>
+  <ToastContainer position="top-center" />
     </div>
   )
   function prePage(){

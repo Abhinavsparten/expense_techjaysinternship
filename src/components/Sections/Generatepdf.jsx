@@ -5,6 +5,8 @@ import { getHIstory } from "../../service/allapi";
 import { useReactToPrint } from "react-to-print";
 import {BsCurrencyRupee}  from 'react-icons/bs'
 import Card from 'react-bootstrap/Card';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import {
   MDBCard,
   MDBCardTitle,
@@ -121,7 +123,7 @@ console.log(CategoryList);
   const generatePDF=useReactToPrint({
     content: ()=>componentPDF.current,
     documentTitle:"user data",
-    onAfterPrint:()=>alert("data saved in pdf")
+    onAfterPrint:()=>toast.success("data saved in pdf")
     
    
   })
@@ -131,12 +133,12 @@ console.log(CategoryList);
            <Header OpenSidebar={OpenSidebar} />
       <Sidebar openSidebarToggle={openSidebarToggle} OpenSidebar={OpenSidebar} />
       <main className='main-container'>
-       <h2 className='text-center text-dark mt-5'>Generate Report</h2>
+       <h2 className='text-center text-dark mt-1'>Generate Report</h2>
         <div className='history-table'>
         
         <div className='ms-3'>
           <h6>Select Frequency</h6>
-          <Select value={frequency} onChange={(values) => setFrequency(values)}>
+          <Select value={frequency} onChange={(values) => setFrequency(values)} className="sel">
             <Select.Option value="30">LAST 30 days</Select.Option>
             <Select.Option value="365">LAST 1 year</Select.Option>
             <Select.Option value="custom">Costum</Select.Option>
@@ -177,7 +179,7 @@ console.log(CategoryList);
           <Card className=" bg-white mb-2 p-0 text-center"   >
        
         <Card.Body>
-          <Card.Title className="text-success "><b>{i.label} :{i.dataset} <BsCurrencyRupee className='icon'/></b></Card.Title>
+          <Card.Title className="text-success"><b className="category">{i.label} :{i.dataset} <BsCurrencyRupee className='category'/></b></Card.Title>
          
         </Card.Body>
       </Card>
@@ -199,7 +201,7 @@ console.log(CategoryList);
     </MDBCard>
 </div>
 </main>
-
+<ToastContainer position="top-center" />
     </div>
     
   )

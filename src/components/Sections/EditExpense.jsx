@@ -91,8 +91,11 @@ function EditExpense() {
       const response = await Editexpense(id,userData)
       // console.log(response);
       if (response.status == 200) {
-        alert(response.data.message);
-        navigate('/dashboard')
+        toast.success(response.data.message);
+        setTimeout(()=> {
+          navigate('/dashboard')
+        }, 1500);
+        
 
 
         //reset all states datas
@@ -132,7 +135,7 @@ function EditExpense() {
         <Header OpenSidebar={OpenSidebar} />
         <MDBRow className='d-flex justify-content-center align-items-center h-100'>
           <MDBCol col='12'>
-          <MDBCard className='bg-secondary   mx-auto border' style={{ maxWidth: '500px',boxShadow:'0 10px 16px 0 rgba(0, 0, 0, 0.5), 0 6px 20px 0 rgba(0, 0, 0, 0.22)',marginTop:"-45px"}}>
+          <MDBCard className='bg-secondary   mx-auto border' style={{ maxWidth: '460px',boxShadow:'0 10px 16px 0 rgba(0, 0, 0, 0.5), 0 6px 20px 0 rgba(0, 0, 0, 0.22)',marginTop:"-15px"}}>
               <MDBCardBody className='p-5 w-100 d-flex flex-column' style={{ marginTop: '-35px',marginBottom:"-39px" }}>
 
                 <h2 className="fw-bold mb-1 text-center" style={{ color: 'black' }}>Edit Expense</h2>

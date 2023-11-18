@@ -2,9 +2,10 @@ import React, {useState, useEffect } from "react";
 import Chart from "react-apexcharts";
 import Sidebar from '../Sidebar';
 import Header from '../Header';
-import { getHIstory, getTransactions } from "../../service/allapi";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { getTransactions } from "../../service/allapi";
 import {BsCurrencyRupee}  from 'react-icons/bs'
-import Generatepdf from "./Generatepdf";
 
 function Reports() {
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false)
@@ -38,13 +39,13 @@ function Reports() {
     var monthsList = [
       {label: "Jan", value: '1', dataset: 0},
       {label: "Feb", value: '2', dataset: 0},
-      {label: "March", value: '3', dataset: 0},
-      {label: "April", value: '4', dataset: 0},
+      {label: "Mar", value: '3', dataset: 0},
+      {label: "Apr", value: '4', dataset: 0},
       {label: "May", value: '5', dataset: 0},
-      {label: "June", value: '6', dataset: 0},
-      {label: "July", value: '7', dataset: 0},
+      {label: "Jun", value: '6', dataset: 0},
+      {label: "Jul", value: '7', dataset: 0},
       {label: "Aug", value: '8', dataset: 0},
-      {label: "Sept", value: '9', dataset: 0},
+      {label: "Sep", value: '9', dataset: 0},
       {label: "Oct", value: '10', dataset: 0},
       {label: "Nov", value: '11', dataset: 0},
       {label: "Dec", value: '12', dataset: 0},
@@ -171,7 +172,7 @@ const totalFood=expense.filter(
       <div>
         <a href='/generatepdf' > <button className='p-2 mb-3 mt-3  btng btn-danger'  style={{backgroundColor:"green",color:"white",borderRadius:"5px",}} >Generate Report</button></a> 
           </div>
-        <Chart className="bars"
+        <Chart className='ba '
           type="bar"
          
           series={[
@@ -185,7 +186,7 @@ const totalFood=expense.filter(
           options={{
             title: {
               text: " ...Expenses In Each Month",
-              style: { fontSize: 22 },
+              style: { fontSize: 14 },
             },
 
             
@@ -257,7 +258,7 @@ const totalFood=expense.filter(
     
    
     </main>
-    
+    <ToastContainer position="top-center" />
    </div>
 
   )

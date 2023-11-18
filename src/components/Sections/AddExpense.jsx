@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
-import "bootstrap/dist/css/bootstrap.min.css"
+import "bootstrap/dist/css/bootstrap.min.css";
 import {
   MDBBtn,
   MDBContainer,
@@ -28,6 +28,7 @@ function AddExpense() {
     setOpenSidebarToggle(!openSidebarToggle)
   }
   const uid=localStorage.getItem("id")
+
   //state to store api response erroe message
   const [errorMsg, setErrorMsg] = useState("")
 
@@ -79,7 +80,10 @@ function AddExpense() {
       const response = await Addexpense(userData)
       console.log(response);
       if (response.status == 200) {
-        navigate('/dashboard')
+        toast.success(response.data.message);
+        setTimeout(()=> {
+          navigate('/dashboard')
+        }, 1500);
 
         //reset all states datas
         setUser({
@@ -96,7 +100,7 @@ function AddExpense() {
       } else {
         setErrorMsg(response.response.data)
       }
-      alert(response.data.message);
+     
       
 
 
@@ -116,7 +120,7 @@ function AddExpense() {
         <MDBRow className='d-flex justify-content-center align-items-center h-100 '>
           <MDBCol col='12'>
 
-            <MDBCard className='bg-secondary   mx-auto border' style={{ maxWidth: '500px',boxShadow:'0 10px 16px 0 rgba(0, 0, 0, 0.5), 0 6px 20px 0 rgba(0, 0, 0, 0.22)',marginTop:"-45px" }}>
+            <MDBCard className='bg-secondary mx-auto border' style={{ maxWidth: '460px',boxShadow:'0 10px 16px 0 rgba(0, 0, 0, 0.5), 0 6px 20px 0 rgba(0, 0, 0, 0.22)',marginTop:"-15px" }}>
               <MDBCardBody className='p-5 w-100 d-flex flex-column' style={{ marginTop: '-32px',marginBottom:"-39px" }}>
 
                 <h2 className="fw-bold mb-1 text-center" style={{ color: 'black' }}>Add Expense</h2>

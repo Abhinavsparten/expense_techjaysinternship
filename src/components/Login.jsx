@@ -24,6 +24,13 @@ import { loginUser } from '../service/allapi';
 function Login() {
   const [smShow, setSmShow] = useState(false);
 
+    
+  const [focus,setFocus] = useState({
+    errName : false,
+    errEmail : false,
+    errPass : false
+  })
+
   //state to store api response erroe message
   const [errorMsg,setErrorMsg]=useState("")
 
@@ -70,11 +77,13 @@ function Login() {
         if(response.data.message === "login Successfull"){
           localStorage.setItem("email",email)
           localStorage.setItem('token', response.data.token);
-          alert(response.data.message);
+          toast.success(response.data.message);
+        setTimeout(()=> {
           navigate('dashboard')
+        }, 1500);
          
         }else{
-          alert(response.data.message);
+          toast.error(response.data.message);
         }
     
       
@@ -90,7 +99,7 @@ function Login() {
       //redirection to home
         
       }else{
-        setErrorMsg(response.response.data)
+        toast.error(response.data.message)
       }
 
     }
@@ -102,29 +111,34 @@ function Login() {
       }
     },[navigate])
   return (
-    <div className='gradient' >
-           <div >
-   <MDBContainer fluid >
-   <div className='header-right ' style={{marginLeft:"91%"}}>
+    <MDBContainer fluid className='gradient'>
+
+    <MDBRow className='d-flex justify-content-center align-items-center h-100'>
+      <MDBCol col='12'>
+<div className='header-right ' style={{marginLeft:"91%",marginTop:"2px"}}>
           
-           <Link onClick={() => setSmShow(true)}><BsPersonCircle  className='icon mt-5'/>
-           </Link> 
-        </div>
+          <Link onClick={() => setSmShow(true)}><BsPersonCircle  className='icon mt-5'/>
+          </Link> 
+       </div>
 
-<MDBRow className='d-flex justify-content-center align-items-center h-100 '>
-<MDBCol col='12'>
-
- <MDBCard className=' my-5 mx-auto border page bg-secondary' style={{backgroundColor:"rgba(255,255,255,0.55)",
-   borderRadius: '8px', maxWidth: '500px', boxShadow:'0 10px 16px 0 rgba(0, 0, 0, 0.5), 0 6px 20px 0 rgba(0, 0, 0, 0.22)',
+ <MDBCard className=' my-5 pageb  mx-auto border  bg-white' style={{backgroundColor:"rgba(255,255,255,0.55)",
+   borderRadius: '2px', maxWidth: '430px',maxHeight:'512px', boxShadow:'0 10px 16px 0 rgba(0, 0, 0, 0.5), 0 6px 20px 0 rgba(0, 0, 0, 0.22)',
+   marginBottom:"200px"
    }}>
    <MDBCardBody className='p-5 w-100 d-flex flex-column mt-1'>
 
         <h2 className="fw-bold mb-5 text-center" style={{color:'black'}}>Sign in</h2>
-
-        <MDBInput required onChange={userDetails} wrapperClass='mb-4 w-100' name='email' placeholder='Email address' id='formControlLg' type='email' size="lg"/>
-        <MDBInput required onChange={userDetails} wrapperClass='mb-4 w-100' name='psw' placeholder='Password' id='formControlLg' type='password' size="lg"/>
+         <div>
+        <input required onBlur={()=>setFocus({...focus,errEmail : true})} focus ={focus.errEmail.toString()} 
+         className='form-control mb-3  w-100' onChange={userDetails} name='email'  placeholder='Email address' id='formControlLg' type='email' size="lg"/>
+         <span className='ms-2 '>Enter a valid email id</span>
+        </div>
+         <div>
+         <input required  pattern='^(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$' onBlur={()=>setFocus({...focus,errPass : true})} focus ={focus.errPass.toString()} 
+         className='form-control mb-3 w-100' onChange={userDetails} name='psw' placeholder='Password' id='formControlLg' type='password' size="lg"/>
+         <span className='ms-2 '>it must have minimum 8 characters and include atleast 1 uppercase and 1 Special character</span>
         <p className="medium mb-2  pb-lg-3 text-center"><a style={{textDecoration:'none',color:'orange'}}  href="/reset">Forgot password?</a></p>
-     
+        </div>
 
         <button size='lg' className='btn btn-primary  p-2 text-center  ' style={{ borderRadius: '5px',backgroundColor:"#378dfc",color:"white"}}  onClick={handleSubmit}>
           login
@@ -135,19 +149,14 @@ function Login() {
         <hr className="my-3" />
 
         <div className="text-center mt-1">
-        <p style={{color:'black'}}>Not a member? <a href="/register" style={{textDecoration:'none',color:'orange'}} >Register</a></p>
+        <p style={{color:'black'}}>Not a member? <a href="/verify" style={{textDecoration:'none',color:'orange'}} >Register</a></p>
         </div>
         
  
 
       </MDBCardBody>
     </MDBCard>
-
-  </MDBCol>
-</MDBRow>
-
-</MDBContainer>
-<Modal 
+    <Modal 
         size="sm"
         show={smShow}
         onHide={() => setSmShow(false)}
@@ -168,9 +177,15 @@ function Login() {
         </Modal.Footer>
       </Modal>
 
-    </div>
+    
     <ToastContainer position="top-center" />
-    </div>
+
+  </MDBCol>
+</MDBRow>
+
+</MDBContainer>
+
+    
   )
 }
 
